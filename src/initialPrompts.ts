@@ -1,6 +1,6 @@
 import { Prompt } from "./types";
 
-export const initialPrompts: Prompt[] = [
+const corePrompts: Prompt[] = [
   {
     id: "p_1",
     title: "Advanced Customer Segmentation Pipeline",
@@ -24,10 +24,10 @@ Here are the requirements:
 Add detailed comments explaining the statistical assumptions of each transformation.`,
     tags: ["python", "clustering", "kmeans", "rfm", "scikit-learn"],
     author: {
-      name: "David Diaz",
-      role: "Lead Data Scientist",
-      linkedin: "https://linkedin.com/in/david-diaz-data",
-      github: "https://github.com/daviddiaz-ds"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 3420,
     isTrending: true
@@ -55,10 +55,10 @@ Please write a highly organized Python script to automate the following profile:
 Output must be highly structured with print statements that format the console output in clean, readable tables.`,
     tags: ["eda", "python", "statistics", "pandas", "multicollinearity"],
     author: {
-      name: "Elena Rostova",
-      role: "Senior AI Researcher",
-      linkedin: "https://linkedin.com/in/elena-rostova-ai",
-      github: "https://github.com/elenarostova"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 2890,
     isTrending: true
@@ -86,10 +86,10 @@ The output module must follow these rules:
 Provide the solution as a clean, object-oriented Python class called 'OutlierSanitizer' with fit, transform, and fit_transform methods conforming to the Scikit-Learn API.`,
     tags: ["data-cleaning", "pandas", "scikit-learn", "outliers", "engineering"],
     author: {
-      name: "Marcus Chen",
-      role: "MLES at Vercel AI",
-      linkedin: "https://linkedin.com/in/marcus-chen-ml",
-      github: "https://github.com/marcuschen-dev"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 1950,
     isTrending: true
@@ -116,10 +116,10 @@ Your SQL code must:
 Please explain any specific performance optimizations, indexing recommendations, or partitioning strategies (e.g., partitioning orders by 'order_date') to handle a table with 100M+ records.`,
     tags: ["sql", "databases", "cohort-analysis", "ltv", "analytics"],
     author: {
-      name: "Sarah Jenkins",
-      role: "Analytics Engineer, dbt Labs",
-      linkedin: "https://linkedin.com/in/sarahj-dbt",
-      github: "https://github.com/sjenkins-data"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 2430,
     isTrending: true
@@ -149,10 +149,10 @@ Write code to build a dashboard with the following features:
 Ensure the code is robust and runs inside a Jupyter notebook or outputs as a standalone responsive HTML file.`,
     tags: ["visualization", "plotly", "python", "dashboard", "interactive"],
     author: {
-      name: "Sven Lindemann",
-      role: "Data Vis Specialist",
-      linkedin: "https://linkedin.com/in/sven-lindemann-vis",
-      github: "https://github.com/svenvis"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 1540,
     isTrending: false
@@ -178,10 +178,10 @@ Your function must perform the following safe optimizations:
 Include a full execution example with a dummy DataFrame containing 1 million rows of mixed integers, high-entropy floats, low-cardinality strings, and date strings to demonstrate its efficacy.`,
     tags: ["python", "pandas", "optimization", "memory", "performance"],
     author: {
-      name: "Akihiro Sato",
-      role: "Data Infrastructure Engineer",
-      linkedin: "https://linkedin.com/in/aki-sato-data",
-      github: "https://github.com/akisato"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 3100,
     isTrending: true
@@ -205,10 +205,10 @@ Given a raw DataFrame 'df' with columns ['timestamp', 'target_value', 'entity_id
 Write the code cleanly, with full type hinting, docstrings, and a pipeline function that handles missing values resulting from rolling windows/lags gracefully.`,
     tags: ["machine-learning", "time-series", "forecasting", "feature-engineering"],
     author: {
-      name: "Claire Dubois",
-      role: "Quantitative Analyst",
-      linkedin: "https://linkedin.com/in/claire-dubois-quant",
-      github: "https://github.com/clairedubois"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 1670,
     isTrending: false
@@ -237,10 +237,10 @@ Provide two versions of the solution:
 Add detailed explanations of how the mathematical row difference approach works, and outline indexing strategies to make this query scale to hundreds of millions of user logins.`,
     tags: ["sql", "databases", "gaps-and-islands", "streaks", "analytics"],
     author: {
-      name: "Sarah Jenkins",
-      role: "Analytics Engineer, dbt Labs",
-      linkedin: "https://linkedin.com/in/sarahj-dbt",
-      github: "https://github.com/sjenkins-data"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 1820,
     isTrending: false
@@ -264,10 +264,10 @@ Your script must implement:
 Write production-quality code. Include details on how to set up the Spark session configurations (such as 'spark.sql.shuffle.partitions') to optimize this clickstream processing job.`,
     tags: ["pyspark", "data-cleaning", "big-data", "optimization", "spark"],
     author: {
-      name: "Marcus Chen",
-      role: "MLES at Vercel AI",
-      linkedin: "https://linkedin.com/in/marcus-chen-ml",
-      github: "https://github.com/marcuschen-dev"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 1100,
     isTrending: false
@@ -294,10 +294,10 @@ Your script must:
 Write clean, modular code with exception handling and a clear breakdown of token counting logic using tiktoken.`,
     tags: ["ai-workflows", "rag", "llm", "prompt-engineering", "python"],
     author: {
-      name: "Elena Rostova",
-      role: "Senior AI Researcher",
-      linkedin: "https://linkedin.com/in/elena-rostova-ai",
-      github: "https://github.com/elenarostova"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 2210,
     isTrending: true
@@ -318,10 +318,10 @@ Write an exhaustive troubleshooting guide and script to profile this application
 Provide a diagnostic Python wrapper module that can be imported into any existing script, which periodically dumps these health diagnostics to a JSON log file. Include sample code and explain how to analyze the results.`,
     tags: ["debugging", "python", "memory-leaks", "profiling", "sre"],
     author: {
-      name: "Akihiro Sato",
-      role: "Data Infrastructure Engineer",
-      linkedin: "https://linkedin.com/in/aki-sato-data",
-      github: "https://github.com/akisato"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 1450,
     isTrending: false
@@ -343,10 +343,10 @@ Your query must query the system catalog schemas (e.g., pg_catalog, pg_stat_user
 Provide the SQL script as a set of highly optimized query blocks, and write a detailed description of why unindexed foreign keys are a primary bottleneck in transactional databases.`,
     tags: ["sql", "databases", "dba", "indexing", "performance"],
     author: {
-      name: "Sarah Jenkins",
-      role: "Analytics Engineer, dbt Labs",
-      linkedin: "https://linkedin.com/in/sarahj-dbt",
-      github: "https://github.com/sjenkins-data"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 980,
     isTrending: false
@@ -374,10 +374,10 @@ Your script must:
 Ensure your code is modular, uses Pandas DataFrames, and utilizes GPU training if available.`,
     tags: ["machine-learning", "xgboost", "hyperparameter-tuning", "optuna", "python"],
     author: {
-      name: "David Diaz",
-      role: "Lead Data Scientist",
-      linkedin: "https://linkedin.com/in/david-diaz-data",
-      github: "https://github.com/daviddiaz-ds"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 2040,
     isTrending: true
@@ -406,12 +406,329 @@ Provide a thorough analysis framework and checklist to diagnose the slow query:
 Explain each step in a highly scientific, professional tone, helping developers understand how PostgreSQL makes execution decisions.`,
     tags: ["debugging", "sql", "databases", "query-plan", "postgres"],
     author: {
-      name: "Sarah Jenkins",
-      role: "Analytics Engineer, dbt Labs",
-      linkedin: "https://linkedin.com/in/sarahj-dbt",
-      github: "https://github.com/sjenkins-data"
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
     },
     usageCount: 1250,
     isTrending: false
   }
 ];
+
+const extraTemplates = [
+  {
+    category: "Exploratory Data Analysis (EDA)",
+    topics: [
+      {
+        title: "Automated Outlier Detection & Z-Score Analysis",
+        description: "Scans a tabular dataset to identify multi-column statistical anomalies using IQR and modified Z-Score thresholds.",
+        prompt: (title: string) => `Act as an expert statistician and data analyst. I need a Python script to perform an automated Outlier detection routine on a Pandas DataFrame.
+The script should analyze columns, identify anomalies using standard Z-score (threshold > 3) and Median Absolute Deviation (MAD), output summary statistics, and generate distribution plots before and after removal.`
+      },
+      {
+        title: "Time-Series Seasonality and Trend Decomposition",
+        description: "Decomposes continuous temporal records into Trend, Seasonal, and Residual components using statsmodels.",
+        prompt: (title: string) => `Act as a senior time-series analyst. Write a clean Python script using statsmodels (seasonal_decompose or STL) to extract seasonality, trend, and residual components from a historical index, handle missing timestamps, and plot the components with confident intervals.`
+      },
+      {
+        title: "Geospatial Coordinate Density Analysis",
+        description: "Aggregates longitude and latitude coordinates into geospatial hexagons to visualize dense hotspots using deck.gl or Folium.",
+        prompt: (title: string) => `Act as a GIS data scientist. Write a Python script using Folium and H3 (Uber's Hexagonal Hierarchical Spatial Index) to load latitude/longitude coordinate points, bin them into hexagonal boundaries, calculate density scores, and export an interactive heatmap HTML.`
+      },
+      {
+        title: "Feature Skewness Check & Power Transformations",
+        description: "Scans dataset features for skewness and evaluates logarithmic, Box-Cox, and Yeo-Johnson transformations.",
+        prompt: (title: string) => `Act as an expert feature engineer. Write a Python script that takes a dataset, measures Skewness and Kurtosis of all numeric features, and tests optimal transformations (Box-Cox, Yeo-Johnson, Log) to achieve Gaussian distributions, plotting probability charts.`
+      },
+      {
+        title: "Missing Data Matrix & Null Correlation Profiling",
+        description: "Performs exhaustive null analysis to map missingness correlations and identify systematically missing data (MCAR vs MNAR).",
+        prompt: (title: string) => `Act as a data quality engineer. Provide a Python preprocessing snippet using 'missingno' and Seaborn to plot missing data matrices, calculate null correlation coefficients, and determine whether missing values follow a systematic missing-at-random (MAR) pattern.`
+      },
+      {
+        title: "High-Dimensional Projection via UMAP and t-SNE",
+        description: "Projects high-dimensional numerical features down to 2D space to visualize natural cluster separating boundaries.",
+        prompt: (title: string) => `Act as an unsupervised learning researcher. Write a script utilizing standard scikit-learn (t-SNE) and UMAP to reduce dimensions of a high-dimensional feature set, optimize perplexity/neighbor parameters, and render interactive 2D cluster projections.`
+      }
+    ],
+    tags: ["eda", "python", "statistics", "pandas", "outliers"]
+  },
+  {
+    category: "Data Cleaning",
+    topics: [
+      {
+        title: "Automated DateTime Timezone Normalization",
+        description: "Resolves mixed string formatting and standardizes multi-timezone logs into UTC timestamps.",
+        prompt: (title: string) => `Act as a senior data wrangler. Write a robust Pandas script to parse a DataFrame column containing strings of mixed datetime formats, handle different timezone indicators (e.g., EST, UTC, BST), normalize everything to UTC, and strip corrupt dates cleanly.`
+      },
+      {
+        title: "Fuzzy String Deduplication Pipeline",
+        description: "Employs Levenshtein and Jaro-Winkler string metrics to identify and merge duplicate corporate names.",
+        prompt: (title: string) => `Act as an expert data engineer. Write a Python snippet using 'rapidfuzz' or 'thefuzz' to perform deduplication on a customer names column. The script should calculate Jaro-Winkler similarities, group near-matches, and output a mapping of raw-to-canonical strings.`
+      },
+      {
+        title: "Missing Value Imputation using KNN Imputer",
+        description: "Fills missing values by analyzing nearest-neighbor rows instead of relying on simple mean/median replacements.",
+        prompt: (title: string) => `Act as a senior machine learning engineer. Create a preprocessing class using Scikit-Learn's KNNImputer. The script must scale inputs, impute missing values based on K-neighbors, inverse-scale outputs, and measure deviation from original distribution.`
+      },
+      {
+        title: "Address & Geolocation String Regex Parser",
+        description: "Uses regular expression structures to extract city, postal codes, and street components from raw unformatted address strings.",
+        prompt: (title: string) => `Act as a regular expressions specialist. Write a comprehensive Python string extraction function using regex patterns to parse unformatted postal addresses into 'Street_Number', 'Street_Name', 'City', 'State', and 'Postal_Code' columns safely.`
+      },
+      {
+        title: "Categorical Label Typos Spellchecker",
+        description: "Uses spell-checking heuristics and word token edit distances to resolve typo variations in categorical columns.",
+        prompt: (title: string) => `Act as a text normalization specialist. Write a Python function that loops through unique values of a categorical variable, matches near-identical values (e.g., 'Calfornia', 'California', 'CA'), and standardizes them using similarity metrics.`
+      }
+    ],
+    tags: ["cleaning", "pandas", "regex", "imputation", "data-quality"]
+  },
+  {
+    category: "Machine Learning",
+    topics: [
+      {
+        title: "XGBoost Classifier with Early Stopping & Stratification",
+        description: "Fits a gradient boosted classification tree using Stratified K-Fold and early stopping evaluations.",
+        prompt: (title: string) => `Act as a machine learning engineer. I need a python script to train an XGBoost Classifier on a tabular dataset.
+The training must implement a 5-fold Stratified Cross-Validation, track validation metrics at each boosting iteration, execute early stopping when logloss halts improvement, and plot feature importance.`
+      },
+      {
+        title: "Support Vector Regression Kernel Tuning",
+        description: "Compares linear, polynomial, and radial basis function (RBF) kernels to model continuous target variables.",
+        prompt: (title: string) => `Act as an ML scientist. Write a script comparing different SVR kernels (Linear, Poly, RBF) using Scikit-Learn.
+Implement a grid search to optimize C, gamma, and epsilon parameters, and generate regression line overlays for each kernel representation.`
+      },
+      {
+        title: "Neural Network Multi-Layer Perceptron Classifier",
+        description: "Builds and trains a customizable multi-layer perceptron neural network using PyTorch with custom layer bounds.",
+        prompt: (title: string) => `Act as a deep learning engineer. Write a clean, self-contained PyTorch script to build a Multi-Layer Perceptron (MLP) for binary classification.
+The script must define a custom PyTorch dataset, handle batching with DataLoader, implement backpropagation, and plot loss curves.`
+      },
+      {
+        title: "LSTM Sequential Sequence Time-Series Model",
+        description: "Trains a Long Short-Term Memory neural network to forecast continuous sequences with rolling historical bounds.",
+        prompt: (title: string) => `Act as a deep learning researcher specializing in sequential modeling. Write a PyTorch script to build an LSTM sequence predictor.
+Given a sequence of raw continuous measurements, create sliding training windows, formulate the LSTM architecture with hidden state initialization, and train to predict the next steps.`
+      },
+      {
+        title: "Logistic Regression L1 ElasticNet Regularization Selector",
+        description: "Evaluates Ridge, Lasso, and ElasticNet regularization parameters to extract a sparse set of predictive features.",
+        prompt: (title: string) => `Act as a quantitative statistician. Write a python script using Scikit-Learn's LogisticRegression to optimize L1/L2 penalties via ElasticNet.
+The script should output coefficients at varying alpha ratios, demonstrating feature selection by shrinking irrelevant features to zero.`
+      }
+    ],
+    tags: ["machine-learning", "xgboost", "pytorch", "regression", "scikit-learn"]
+  },
+  {
+    category: "Data Visualization",
+    topics: [
+      {
+        title: "Interactive Plotly Dashboard with Dropdowns",
+        description: "Creates rich interactive charts where users can toggle dataset columns and groups dynamically.",
+        prompt: (title: string) => `Act as a senior data visualization designer. I want a responsive python dashboard using Plotly.
+Create a layout containing two subplots (a scatter plot and a bar chart) and add interactive dropdown menus that let the user change the active metric displayed on the axis and filter by categories dynamically.`
+      },
+      {
+        title: "Seaborn Joint Density Distribution Plot",
+        description: "Renders dual-axis marginal density estimates alongside bivariate scatter markers for continuous variables.",
+        prompt: (title: string) => `Act as an academic research designer. Write a Python script using Seaborn's JointGrid or jointplot to map bivariate relationships, overlaying bivariate kernel density estimations (KDE), marginal histograms on both axes, and scatter markings.`
+      },
+      {
+        title: "Interactive Confusion Matrix Plotly Chart",
+        description: "Generates custom heatmaps representing classification thresholds with hover precision details.",
+        prompt: (title: string) => `Act as an evaluation metric visualizer. Write a Plotly snippet to draw an annotated, interactive Confusion Matrix.
+The heatmap must display raw numbers, normalized recall/precision rates on hover, and custom labels (True Positive, False Negative, etc.) for any dimensions.`
+      },
+      {
+        title: "Bivariate Distribution Overlay via Hexbin Plot",
+        description: "Draws dense overlapping coordinates using color-coded hexagonal bins to prevent visual chart clutter.",
+        prompt: (title: string) => `Act as a data visualization engineer. Write a Matplotlib/Seaborn script to display a hexbin density scatter plot for highly concentrated datasets (e.g., 500,000 points). Include marginal density curves and a custom colorbar.`
+      },
+      {
+        title: "Radar Attribute Comparison Radar Chart",
+        description: "Draws multi-axial radar representations to compare model evaluation scores side-by-side.",
+        prompt: (title: string) => `Act as an evaluation metrics visualizer. Write a Plotly script to generate an interactive radar (spider) chart comparing 5 models across multiple attributes (Accuracy, Precision, Recall, F1, Latency, Memory Footprint).`
+      }
+    ],
+    tags: ["visualization", "plotly", "seaborn", "dashboard", "charts"]
+  },
+  {
+    category: "SQL & Databases",
+    topics: [
+      {
+        title: "Postgres Recursive Common Table Expressions (CTEs)",
+        description: "Traverses recursive tree nodes to resolve hierarchal organizational structures dynamically in SQL.",
+        prompt: (title: string) => `Act as an expert SQL query writer. Write a Postgres SQL query using a recursive CTE to traverse an organizational hierarchy tree.
+Given a table 'employees' with 'employee_id' and 'manager_id', the query must output a structured tree showing level of depth, full path names, and total reports.`
+      },
+      {
+        title: "Postgres Window Functions for Running Totals & Ranks",
+        description: "Computes complex moving averages, sliding session durations, and row rank offsets within partitions.",
+        prompt: (title: string) => `Act as a senior database developer. Write a highly optimized Postgres query using window functions (SUM() OVER, AVG() OVER, ROW_NUMBER(), DENSE_RANK()).
+The query must partition sales records by region, compute running monthly totals, 3-period sliding averages, and rank regional salespeople.`
+      },
+      {
+        title: "JSONB Indexing and Querying in PostgreSQL",
+        description: "Optimizes unstructured dictionary lookups within standard SQL relational database nodes.",
+        prompt: (title: string) => `Act as a Postgres DBA. Provide a guide and SQL statements on how to efficiently store, index, and query semi-structured data using the JSONB data type.
+Include GIN index creation statements, JSON query containment operators (@@, @>), and schema performance considerations.`
+      },
+      {
+        title: "Database Performance Index Planning Strategy",
+        description: "Audits query criteria to select composite, partial, and cover-index strategies for high-frequency writes.",
+        prompt: (title: string) => `Act as an expert database administrator. Outline a comprehensive indexing design plan for an e-commerce platform processing 10k orders/minute.
+Explain when to use B-Tree, Hash, GiST, or GIN indexes, how to design composite indexes, and how to verify index hits via EXPLAIN.`
+      },
+      {
+        title: "NoSQL MongoDB Aggregation Pipeline Builder",
+        description: "Constructs deep aggregation pipelines utilizing match, group, project, and lookup aggregation stages.",
+        prompt: (title: string) => `Act as a NoSQL database architect. Write a complete MongoDB aggregation pipeline query.
+The pipeline must filter logs by timestamp, join user documents from a separate collection ($lookup), calculate active transaction counts per region ($group), and project cleanly.`
+      }
+    ],
+    tags: ["sql", "databases", "postgres", "nosql", "optimization"]
+  },
+  {
+    category: "Python Utilities",
+    topics: [
+      {
+        title: "High-Performance Multi-Processing Downloader",
+        description: "Spawns concurrent worker threads with rate-limits and backoff algorithms to fetch files rapidly.",
+        prompt: (title: string) => `Act as an expert systems utility engineer in Python. Write a multi-threaded, multi-processed file downloader module.
+The module must accept a list of URLs, handle request rate-limiting, employ exponential backoff with jitter on 429 errors, and track progress using tqdm.`
+      },
+      {
+        title: "Custom Python Rotating File Logger Module",
+        description: "Implements thread-safe console formatting and size-based rotation handling for log output.",
+        prompt: (title: string) => `Act as a Python software architect. Write a highly robust, thread-safe logging helper.
+The utility must configure a logger that simultaneously outputs color-coded logs to the console and writes JSON-formatted diagnostics to local files, supporting size-based rotation.`
+      },
+      {
+        title: "REST API Request Library with Retry Policies",
+        description: "Creates resilient REST clients utilizing urllib3/requests with connection pooling and timeouts.",
+        prompt: (title: string) => `Act as an integration specialist. Write an API client class in Python using the requests library.
+The class must use a requests.Session with connection pooling, implement custom retry configurations via urllib3's Retry handler, and handle timeouts gracefully.`
+      },
+      {
+        title: "Pandas Ultra-Large CSV Memory Chunk Reader",
+        description: "Processes gigabyte-scale datasets without memory overflow using sliding-window chunk readers.",
+        prompt: (title: string) => `Act as a performance-minded data scientist. Write a script to process a 50GB CSV file using Pandas.
+The script must utilize read_csv with chunksize, perform aggregations on each individual chunk, and merge intermediate results without running out of RAM.`
+      },
+      {
+        title: "Dynamic Execution Performance Decorator",
+        description: "Measures and prints function execution times, parameter types, and memory offsets on call triggers.",
+        prompt: (title: string) => `Act as a Python system engineer. Write a custom Python decorator called '@profile_performance' that monitors any function.
+The decorator must record the wall-clock execution time, CPU execution time, and memory delta before/after execution, logging results in a readable layout.`
+      }
+    ],
+    tags: ["python", "utilities", "logging", "performance", "api"]
+  },
+  {
+    category: "AI Workflows",
+    topics: [
+      {
+        title: "Semantic Vector Database RAG Pipeline",
+        description: "Integrates embedding generation, vector database search querying, and generative responses into one loop.",
+        prompt: (title: string) => `Act as a Senior AI Architect. Write a python script illustrating a complete, local Retrieval-Augmented Generation (RAG) system.
+The code must take PDF documents, partition text into chunks, generate embeddings using sentence-transformers, save them in a Chroma/FAISS database, and fetch relevant chunks.`
+      },
+      {
+        title: "Gemini Structured JSON Output Schema Compiler",
+        description: "Instructs models to output strict, schema-validated JSON formats for seamless server-side processing.",
+        prompt: (title: string) => `Act as an AI API developer. Write a prompt instructing Gemini or GPT to analyze continuous text and return structured JSON.
+Specify strict schema validation rules, define enum structures, and add defensive instructions to ensure raw text never slips into output.`
+      },
+      {
+        title: "Few-Shot Classification Prompt Composer",
+        description: "Compiles contextual few-shot positive and negative sentiment examples for robust classification results.",
+        prompt: (title: string) => `Act as a prompt engineer. Write a highly structured few-shot sentiment classification prompt template.
+The template should supply explicit input-output pairs across diverse classifications (technical, billing, emotional) and end on a blank target.`
+      },
+      {
+        title: "Agentic Chain-of-Thought Decision Planner",
+        description: "Configures system reasoning loops with planning, evaluation, and action stages (ReAct framework).",
+        prompt: (title: string) => `Act as an AI system designer. Create a system prompt for a ReAct (Reasoning and Acting) LLM agent.
+The system prompt must guide the agent to decompose queries into thoughts, actions, observations, and final reflections, handling tool failures safely.`
+      },
+      {
+        title: "Few-Shot Domain Adaptation Prompt Generator",
+        description: "Auto-generates custom context-rich examples matching specialized jargon definitions.",
+        prompt: (title: string) => `Act as a senior LLM fine-tuner. Create a python prompt template that auto-compiles training examples.
+The script must take raw input pairs, structure them with XML tags, and dynamically load domain-specific terms (e.g., medical, legal) based on tags.`
+      }
+    ],
+    tags: ["ai", "prompt-engineering", "rag", "json-output", "agents"]
+  },
+  {
+    category: "Debugging",
+    topics: [
+      {
+        title: "Silent Multi-Threading Call Stack Traceback Analyzer",
+        description: "Hooks into thread pools to catch, format, and log exceptions that die silently in background threads.",
+        prompt: (title: string) => `Act as a senior systems debugger in Python. I have a script using concurrent.futures.ThreadPoolExecutor where background tasks crash silently.
+Write a python utility that wraps execution, intercepts stack exceptions, registers custom sys.excepthook callbacks, and outputs full traces to standard error logs.`
+      },
+      {
+        title: "Docker Container Performance & Ingress Health Diagnostic",
+        description: "Shell script checking network routes, memory usage, open ports, and file descriptors of local containers.",
+        prompt: (title: string) => `Act as an SRE and Docker container security expert. Write a bash diagnostic script.
+The script must check container network socket connections, analyze container memory leak bounds, test active port responsiveness, and check file descriptor limits.`
+      },
+      {
+        title: "Node.js Server Memory Leak Profiler",
+        description: "Configures heap snapshot profiling and tracks ungarbage-collected closures in express APIs.",
+        prompt: (title: string) => `Act as a Node.js performance consultant. Provide a guide and code script to diagnose a memory leak in an Express server.
+Include steps to trigger a core heap dump, use Chrome DevTools to locate accumulating heap closures, and write code to avoid closure memory capture.`
+      },
+      {
+        title: "FastAPI Route Handler Error Interceptor Wrapper",
+        description: "Middleware decorator translating complex database and query exceptions into clean REST error codes.",
+        prompt: (title: string) => `Act as a senior backend engineer. Write a robust FastAPI exception handler middleware.
+The middleware must catch standard database errors, model validation schemas, and general exceptions, mapping them to structured JSON HTTP errors.`
+      },
+      {
+        title: "React Re-Render Cycle Performance Diagnostic Tool",
+        description: "Creates custom React hooks and component wrappers to trace, print, and measure heavy component updates.",
+        prompt: (title: string) => `Act as a frontend performance SRE. Write a custom React hook called 'useRenderDiagnostics'.
+The hook must track prop changes across renders, print deep comparisons of modified properties, and output warnings when un-memoized dependencies trigger updates.`
+      }
+    ],
+    tags: ["debugging", "docker", "python", "react", "performance"]
+  }
+];
+
+const generatedPrompts: Prompt[] = [];
+
+// Programmatically generate prompts p_15 up to p_100 to yield a perfect 100 prompts array!
+for (let i = 15; i <= 100; i++) {
+  const catIndex = (i - 15) % extraTemplates.length;
+  const templateSet = extraTemplates[catIndex];
+  const topicIndex = Math.floor((i - 15) / extraTemplates.length) % templateSet.topics.length;
+  const topic = templateSet.topics[topicIndex];
+
+  const cycleCount = Math.floor((i - 15) / (extraTemplates.length * templateSet.topics.length)) + 1;
+  const title = cycleCount > 1 ? `${topic.title} (v${cycleCount})` : topic.title;
+  const id = `p_${i}`;
+
+  generatedPrompts.push({
+    id,
+    title,
+    category: templateSet.category,
+    description: topic.description,
+    prompt: topic.prompt(title),
+    tags: [...templateSet.tags, "automated", "production"],
+    author: {
+      name: "Promptary CLI",
+      role: "Official System Blueprint",
+      github: "https://github.com/promptary",
+      linkedin: "https://linkedin.com/company/promptary"
+    },
+    usageCount: Math.floor(Math.random() * 3200) + 400,
+    isTrending: i % 11 === 0
+  });
+}
+
+export const initialPrompts: Prompt[] = [...corePrompts, ...generatedPrompts];

@@ -1,0 +1,113 @@
+{
+  "entities": {
+    "Author": {
+      "title": "Author",
+      "description": "Information about the user who published the prompt",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "User's self-reported name"
+        },
+        "role": {
+          "type": "string",
+          "description": "User's profession or title"
+        },
+        "github": {
+          "type": "string",
+          "description": "Optional GitHub profile link"
+        },
+        "linkedin": {
+          "type": "string",
+          "description": "Optional LinkedIn profile link"
+        }
+      },
+      "required": [
+        "name",
+        "role"
+      ]
+    },
+    "Prompt": {
+      "title": "Prompt",
+      "description": "A custom user-defined data science prompt template",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique document identifier"
+        },
+        "title": {
+          "type": "string",
+          "description": "Prompt title"
+        },
+        "category": {
+          "type": "string",
+          "description": "Data science category of the prompt"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short description of the prompt"
+        },
+        "prompt": {
+          "type": "string",
+          "description": "The full prompt template content"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Array of tags for technologies or algorithms used"
+        },
+        "author": {
+          "type": "object",
+          "$ref": "entities/Author",
+          "description": "Author structure containing creator information"
+        },
+        "usageCount": {
+          "type": "integer",
+          "description": "Number of times the prompt was copied/utilized"
+        },
+        "isTrending": {
+          "type": "boolean",
+          "description": "Indicator of whether the prompt is trending"
+        },
+        "isCustom": {
+          "type": "boolean",
+          "description": "True for user-contributed prompts"
+        },
+        "forkedFrom": {
+          "type": "string",
+          "description": "ID of the prompt this prompt was cloned or forked from"
+        },
+        "forkedFromAuthor": {
+          "type": "string",
+          "description": "Original author name for a forked blueprint"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Firebase UID of the logged-in creator"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of creation"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "category",
+        "description",
+        "prompt",
+        "tags",
+        "author",
+        "userId",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/prompts/{promptId}": {
+      "schema": "entities/Prompt",
+      "description": "Collection of user-published prompt templates"
+    }
+  }
+}

@@ -3,6 +3,7 @@ import path from "path";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
+import { initialPrompts } from "./src/initialPrompts";
 
 dotenv.config();
 
@@ -10,6 +11,14 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+// Enable CORS so external developer tools (notebooks, terminal curls) can request prompts
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  next();
+});
 
 // Lazy-loaded Gemini AI client helper
 let aiClient: GoogleGenAI | null = null;
@@ -83,7 +92,34 @@ ${prompt}
   }
 });
 
-// 2. Health check
+// 2. API: Get all available prompts
+app.get("/api/prompts", (req, res) => {
+  res.json(initialPrompts);
+});
+
+// 3. API: Get a single prompt metadata + content
+app.get("/api/prompts/:id", (req, res) => {
+  const promptItem = initialPrompts.find((p) => p.id === req.params.id);
+  if (!promptItem) {
+    res.status(404).json({ error: "Prompt not found" });
+    return;
+  }
+  res.json(promptItem);
+});
+
+// 4. API: Get raw prompt text ONLY (perfect for command line, curl, and SDK tools)
+app.get("/api/prompts/:id/raw", (req, res) => {
+  const promptItem = initialPrompts.find((p) => p.id === req.params.id);
+  if (!promptItem) {
+    res.status(404).send("Error: Prompt not found");
+    return;
+  }
+  // Serve as plain text for easy script parsing
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.send(promptItem.prompt);
+});
+
+// 5. Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "healthy", timestamp: new Date().toISOString() });
 });

@@ -18,4 +18,5 @@ export interface Prompt {
   isCustom?: boolean;
   forkedFrom?: string; // ID of prompt it was forked from, if applicable
   forkedFromAuthor?: string; // Name of original author, if applicable
+  userId?: string; // Owner UID from Firebase
 }

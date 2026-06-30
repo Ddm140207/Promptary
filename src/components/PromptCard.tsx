@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Prompt } from "../types";
-import { Copy, Check, Eye, Bookmark, Share2, Award, Zap } from "lucide-react";
+import { Copy, Check, Eye, Bookmark, Share2, Award, Zap, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
+import { getAvatarGradient } from "../utils/avatar";
 
 interface PromptCardProps {
   prompt: Prompt;
@@ -100,8 +101,14 @@ export default function PromptCard({ prompt, onView, onToggleSave, isSaved }: Pr
       <div className="flex items-center justify-between gap-3 text-xs mt-1">
         {/* Creator Identity */}
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-gradient-to-tr from-[#8B5CF6] to-[#3B82F6] rounded-full flex items-center justify-center font-bold text-white text-[11px] uppercase shadow-sm">
-            {prompt.author.name ? prompt.author.name.charAt(0) : "DS"}
+          <div className={`w-7 h-7 bg-gradient-to-tr ${getAvatarGradient(prompt.author.name)} rounded-full flex items-center justify-center font-bold text-white text-[11px] uppercase shadow-sm`}>
+            {prompt.author.name === "Promptary CLI" ? (
+              <Sparkles className="w-3.5 h-3.5 text-amber-200 fill-amber-200/20" />
+            ) : prompt.author.name ? (
+              prompt.author.name.charAt(0)
+            ) : (
+              "DS"
+            )}
           </div>
           <div className="flex flex-col">
             <span className="text-slate-200 font-medium font-sans truncate max-w-[100px]" title={prompt.author.name}>

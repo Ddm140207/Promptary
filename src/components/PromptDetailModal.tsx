@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Prompt } from "../types";
 import { 
   X, Copy, Check, Bookmark, GitFork, 
-  Linkedin, Github, Terminal,
-  ThumbsUp, ThumbsDown
+  Linkedin, Github, Terminal, Code, Cpu,
+  ThumbsUp, ThumbsDown, Sparkles, Trash2, AlertTriangle
 } from "lucide-react";
 import { motion } from "motion/react";
+import { getAvatarGradient } from "../utils/avatar";
+import { useAuth } from "../lib/AuthContext";
 
 interface PromptDetailModalProps {
   prompt: Prompt;
@@ -17,6 +19,7 @@ interface PromptDetailModalProps {
   isDisliked: boolean;
   onLike: (promptId: string) => void;
   onDislike: (promptId: string) => void;
+  onDelete?: (promptId: string) => void;
 }
 
 export default function PromptDetailModal({ 
@@ -28,9 +31,15 @@ export default function PromptDetailModal({
   isLiked,
   isDisliked,
   onLike,
-  onDislike
+  onDislike,
+  onDelete
 }: PromptDetailModalProps) {
+  const { user } = useAuth();
   const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState<"text" | "cli">("text");
+  const [activeLang, setActiveLang] = useState<"pip" | "python" | "curl">("pip");
+  const [codeCopied, setCodeCopied] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const likesCount = Math.floor((prompt.usageCount || 0) * 0.12) + (isLiked ? 1 : 0);
   const dislikesCount = Math.floor((prompt.usageCount || 0) * 0.005) + (isDisliked ? 1 : 0);
@@ -39,6 +48,12 @@ export default function PromptDetailModal({
     navigator.clipboard.writeText(prompt.prompt);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleCopyCode = (textToCopy: string) => {
+    navigator.clipboard.writeText(textToCopy);
+    setCodeCopied(true);
+    setTimeout(() => setCodeCopied(false), 2000);
   };
 
   const handleForkClick = () => {
@@ -108,8 +123,14 @@ export default function PromptDetailModal({
               <div>
                 <h4 className="text-xs uppercase tracking-wider text-slate-500 font-mono mb-2">Author Profile</h4>
                 <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-gradient-to-tr from-[#8B5CF6] to-[#3B82F6] rounded-full flex items-center justify-center font-bold text-white text-sm uppercase">
-                    {prompt.author.name ? prompt.author.name.charAt(0) : "DS"}
+                  <div className={`w-10 h-10 bg-gradient-to-tr ${getAvatarGradient(prompt.author.name)} rounded-full flex items-center justify-center font-bold text-white text-sm uppercase shadow`}>
+                    {prompt.author.name === "Promptary CLI" ? (
+                      <Sparkles className="w-5 h-5 text-amber-200 fill-amber-200/20" />
+                    ) : prompt.author.name ? (
+                      prompt.author.name.charAt(0)
+                    ) : (
+                      "DS"
+                    )}
                   </div>
                   <div>
                     <h5 className="text-sm text-slate-100 font-medium font-sans">
@@ -148,39 +169,183 @@ export default function PromptDetailModal({
             </div>
           </div>
 
-          {/* Prompt text viewer */}
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-mono text-slate-400 flex items-center gap-1.5">
-                <Terminal className="w-3.5 h-3.5 text-purple-400" />
-                <span>Blueprint Prompt Content</span>
-              </label>
+          {/* Tab Selector & Content Area */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between border-b border-[#262B33]/80 pb-2">
+              <div className="flex items-center gap-1 bg-[#101317] p-1 rounded-xl border border-[#20252D]">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("text")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer ${
+                    activeTab === "text"
+                      ? "bg-[#8B5CF6]/10 text-[#C084FC] border border-[#8B5CF6]/30 font-bold"
+                      : "text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  <Code className="w-3.5 h-3.5" />
+                  <span>Prompt Text</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("cli")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 cursor-pointer ${
+                    activeTab === "cli"
+                      ? "bg-[#3B82F6]/10 text-[#60A5FA] border border-[#3B82F6]/30 font-bold"
+                      : "text-slate-400 hover:text-slate-200"
+                  }`}
+                >
+                  <Terminal className="w-3.5 h-3.5" />
+                  <span>API & CLI Integration</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" title="Working API endpoint active" />
+                </button>
+              </div>
+
+              {/* Status Label */}
+              <div className="text-[10px] font-mono text-slate-500 flex items-center gap-1.5">
+                <Cpu className="w-3 h-3 text-[#8B5CF6]" />
+                <span>ID: <span className="text-slate-300 font-bold">{prompt.id}</span></span>
+              </div>
             </div>
 
-            {/* Prompt box */}
-            <div className="relative border border-[#262B33] bg-[#0D0F12] rounded-xl overflow-hidden">
-              <pre className="p-5 font-mono text-xs text-emerald-400 leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-[350px]">
-                {prompt.prompt}
-              </pre>
+            {/* TAB 1: Raw Prompt Text Viewer */}
+            {activeTab === "text" && (
+              <div className="relative border border-[#262B33] bg-[#0D0F12] rounded-xl overflow-hidden">
+                <pre className="p-5 font-mono text-xs text-emerald-400 leading-relaxed overflow-x-auto whitespace-pre-wrap max-h-[350px]">
+                  {prompt.prompt}
+                </pre>
 
-              {/* Floating quick copy */}
-              <button
-                onClick={handleCopy}
-                className="absolute bottom-4 right-4 p-2 bg-[#15181D]/80 border border-[#262B33] hover:border-slate-500 rounded-lg text-slate-300 hover:text-white transition-all cursor-pointer flex items-center gap-1.5 backdrop-blur-sm"
-              >
-                {copied ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-emerald-500" />
-                    <span className="text-[10px] font-mono text-emerald-500">Copied</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-3.5 h-3.5" />
-                    <span className="text-[10px] font-mono">Copy Blueprint</span>
-                  </>
-                )}
-              </button>
-            </div>
+                {/* Floating quick copy */}
+                <button
+                  onClick={handleCopy}
+                  className="absolute bottom-4 right-4 p-2 bg-[#15181D]/80 border border-[#262B33] hover:border-slate-500 rounded-lg text-slate-300 hover:text-white transition-all cursor-pointer flex items-center gap-1.5 backdrop-blur-sm"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-500" />
+                      <span className="text-[10px] font-mono text-emerald-500">Copied</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span className="text-[10px] font-mono">Copy Blueprint</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
+            {/* TAB 2: Developer API & CLI Integration */}
+            {activeTab === "cli" && (
+              <div className="bg-[#090C10] border border-[#262B33] rounded-xl p-4 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <h4 className="text-xs font-semibold text-slate-200">Integrate Blueprint Dynamically</h4>
+                    <p className="text-[10px] text-slate-400">Fetch this expert prompt in real-time within your production environments.</p>
+                  </div>
+
+                  {/* Sub-tab switcher */}
+                  <div className="flex items-center gap-1 bg-[#15181D] p-0.5 border border-[#20252D] rounded-lg">
+                    {(["pip", "python", "curl"] as const).map((lang) => (
+                      <button
+                        key={lang}
+                        type="button"
+                        onClick={() => setActiveLang(lang)}
+                        className={`px-2 py-1 text-[10px] font-mono rounded-md transition-all cursor-pointer ${
+                          activeLang === lang
+                            ? "bg-slate-700 text-white font-bold"
+                            : "text-slate-500 hover:text-slate-300"
+                        }`}
+                      >
+                        {lang === "pip" ? "pip CLI" : lang === "python" ? "Python" : "cURL"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Integration Details / Code Content */}
+                <div className="relative">
+                  {activeLang === "pip" && (
+                    <div className="space-y-3">
+                      <div className="bg-[#15181D] border border-[#20252D] rounded-lg p-3 font-mono text-[11px] text-slate-300 space-y-2">
+                        <div className="text-slate-500"># 1. Install the official Promptary python CLI tool</div>
+                        <div className="flex items-center justify-between bg-black/40 p-2 rounded border border-white/5">
+                          <span className="text-purple-400">pip install <span className="text-white">promptary-cli</span></span>
+                          <button
+                            onClick={() => handleCopyCode("pip install promptary-cli")}
+                            className="text-slate-500 hover:text-white"
+                          >
+                            <Copy className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        <div className="text-slate-500 mt-2"># 2. Retrieve this blueprint by ID dynamically</div>
+                        <div className="flex items-center justify-between bg-black/40 p-2 rounded border border-white/5">
+                          <span className="text-sky-400">promptary pull <span className="text-emerald-400">{prompt.id}</span></span>
+                          <button
+                            onClick={() => handleCopyCode(`promptary pull ${prompt.id}`)}
+                            className="text-slate-500 hover:text-white"
+                          >
+                            <Copy className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="text-[10px] font-sans text-slate-400 flex items-center gap-2 bg-slate-900/40 p-2.5 rounded-lg border border-slate-800/40">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
+                        <span>The CLI pulls, formats, and outputs variables directly into your active python workspace environments.</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeLang === "python" && (
+                    <div className="space-y-3">
+                      <div className="bg-[#15181D] border border-[#20252D] rounded-lg p-3 font-mono text-[11px] text-slate-300 overflow-x-auto">
+                        <span className="text-pink-400">import</span> requests<br />
+                        <br />
+                        <span className="text-slate-500"># Fetch the live blueprint from Promptary repository</span><br />
+                        url = <span className="text-emerald-400">f"{window.location.origin}/api/prompts/{prompt.id}/raw"</span><br />
+                        prompt_template = requests.get(url).text<br />
+                        <br />
+                        print(<span className="text-emerald-400">f"Loaded blueprint prompt successfully!"</span>)<br />
+                        print(prompt_template[:<span className="text-amber-400">120</span>] + <span className="text-emerald-400">"..."</span>)
+                      </div>
+                      <button
+                        onClick={() => handleCopyCode(`import requests\n\nurl = f"${window.location.origin}/api/prompts/${prompt.id}/raw"\nprompt_template = requests.get(url).text\nprint(f"Loaded blueprint prompt successfully!")\nprint(prompt_template[:120] + "...")`)}
+                        className="absolute top-2 right-2 p-1.5 bg-[#1C2026] hover:bg-slate-700 border border-[#2D343F] rounded-md text-slate-400 hover:text-white transition-colors"
+                        title="Copy Python Script"
+                      >
+                        {codeCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                      </button>
+                      <div className="text-[10px] font-sans text-slate-400 flex items-center gap-2 bg-slate-900/40 p-2.5 rounded-lg border border-slate-800/40">
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        <span>This python integration fetches prompt contents dynamically in production, allowing instant OTA prompt updates.</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeLang === "curl" && (
+                    <div className="space-y-3">
+                      <div className="bg-[#15181D] border border-[#20252D] rounded-lg p-3 font-mono text-[11px] text-slate-300 relative">
+                        <div className="text-slate-500"># Direct cURL download (Returns raw prompt plain-text)</div>
+                        <div className="text-sky-400 select-all whitespace-pre-wrap break-all pr-8 mt-1">
+                          curl -s "{window.location.origin}/api/prompts/{prompt.id}/raw"
+                        </div>
+                        <button
+                          onClick={() => handleCopyCode(`curl -s "${window.location.origin}/api/prompts/${prompt.id}/raw"`)}
+                          className="absolute top-2 right-2 p-1.5 bg-[#1C2026] hover:bg-slate-700 border border-[#2D343F] rounded-md text-slate-400 hover:text-white transition-colors"
+                          title="Copy curl command"
+                        >
+                          {codeCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
+                      <div className="text-[10px] font-sans text-slate-400 flex items-center gap-2 bg-slate-900/40 p-2.5 rounded-lg border border-slate-800/40">
+                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                        <span>You can pipe this directly into LLM chain files, automated agents, or serverless functions. Try pasting it into your terminal!</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -228,6 +393,44 @@ export default function PromptDetailModal({
           </div>
 
           <div className="flex items-center gap-2">
+            {prompt.isCustom && user && prompt.userId === user.uid && (
+              <>
+                {showConfirmDelete ? (
+                  <div className="flex items-center gap-2 bg-rose-500/10 border border-rose-500/35 rounded-xl px-3 py-1.5 text-xs">
+                    <AlertTriangle className="w-3.5 h-3.5 text-rose-400 animate-bounce" />
+                    <span className="text-rose-200 font-mono font-medium">Permanently delete?</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (onDelete) onDelete(prompt.id);
+                        setShowConfirmDelete(false);
+                      }}
+                      className="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-semibold transition-all cursor-pointer text-xs"
+                    >
+                      Yes, Delete
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmDelete(false)}
+                      className="px-2.5 py-1 bg-[#1E293B] hover:bg-slate-800 text-slate-300 rounded-lg transition-all cursor-pointer border border-[#262B33] text-xs"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmDelete(true)}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 rounded-xl text-sm transition-all cursor-pointer"
+                    title="Permanently delete your custom blueprint"
+                  >
+                    <Trash2 className="w-4 h-4 text-rose-400" />
+                    <span>Delete</span>
+                  </button>
+                )}
+              </>
+            )}
+
             <button
               onClick={handleForkClick}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1E293B] hover:bg-slate-800 border border-[#262B33] text-white rounded-xl text-sm transition-all cursor-pointer"

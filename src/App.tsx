@@ -11,25 +11,63 @@ import {
   ChevronRight, Award, Flame, BookmarkCheck, GitBranch, Plus 
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { collection, query, orderBy, onSnapshot, doc, setDoc, serverTimestamp, deleteDoc } from "firebase/firestore";
+import { db, handleFirestoreError, OperationType } from "./lib/firebase";
+import { useAuth } from "./lib/AuthContext";
 
 export default function App() {
+  const { user } = useAuth();
+
   // 1. Core States
   const [welcomed, setWelcomed] = useState<boolean>(() => {
     return localStorage.getItem("promptary_welcomed") === "true";
   });
 
-  const [prompts, setPrompts] = useState<Prompt[]>(() => {
-    const local = localStorage.getItem("promptary_prompts");
-    if (local) {
-      try {
-        return JSON.parse(local);
-      } catch (e) {
-        console.error("Error parsing local prompts, resetting", e);
+  const [customDbPrompts, setCustomDbPrompts] = useState<Prompt[]>([]);
+  const [dbSyncError, setDbSyncError] = useState<string | null>(null);
+
+  // 1b. Real-time Firebase Sync for Contributed Prompts
+  useEffect(() => {
+    const q = query(collection(db, "prompts"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const list: Prompt[] = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          list.push({
+            id: doc.id,
+            title: data.title,
+            category: data.category,
+            description: data.description,
+            prompt: data.prompt,
+            tags: data.tags || [],
+            author: {
+              name: data.author?.name || "Contributor",
+              role: data.author?.role || "Developer",
+              github: data.author?.github || undefined,
+              linkedin: data.author?.linkedin || undefined
+            },
+            usageCount: data.usageCount || 1,
+            isCustom: true,
+            isTrending: data.isTrending || false,
+            forkedFrom: data.forkedFrom || undefined,
+            forkedFromAuthor: data.forkedFromAuthor || undefined,
+            userId: data.userId || undefined
+          });
+        });
+        setCustomDbPrompts(list);
+        setDbSyncError(null);
+      },
+      (error) => {
+        console.error("Firestore onSnapshot Sync Error: ", error);
+        setDbSyncError(error.message || String(error));
       }
-    }
-    // Default fallback to initial high-quality prompts list
-    return initialPrompts;
-  });
+    );
+    return () => unsubscribe();
+  }, []);
+
+  const prompts = [...customDbPrompts, ...initialPrompts];
 
   const [savedIds, setSavedIds] = useState<string[]>(() => {
     const local = localStorage.getItem("promptary_saved_ids");
@@ -77,10 +115,6 @@ export default function App() {
   const [visibleCount, setVisibleCount] = useState<Record<string, number>>({});
 
   // 2. Synchronize to LocalStorage
-  useEffect(() => {
-    localStorage.setItem("promptary_prompts", JSON.stringify(prompts));
-  }, [prompts]);
-
   useEffect(() => {
     localStorage.setItem("promptary_saved_ids", JSON.stringify(savedIds));
   }, [savedIds]);
@@ -143,25 +177,68 @@ export default function App() {
     });
   };
 
-  const handlePublishNewPrompt = (newPrompt: Prompt) => {
-    setPrompts((prev) => [newPrompt, ...prev]);
-    if (newPrompt.forkedFrom) {
-      setSavedIds((prev) => {
-        if (!prev.includes(newPrompt.id)) {
-          return [...prev, newPrompt.id];
-        }
-        return prev;
-      });
+  const handlePublishNewPrompt = async (newPrompt: Prompt) => {
+    if (!user) {
+      console.error("Must be logged in to publish a blueprint.");
+      return;
     }
-    setActiveView("all");
-    setActiveCategory(null);
-    setForkSource(null);
+
+    const docId = "p_user_" + Date.now();
+    const docRef = doc(db, "prompts", docId);
+
+    try {
+      await setDoc(docRef, {
+        id: docId,
+        title: newPrompt.title,
+        category: newPrompt.category,
+        description: newPrompt.description,
+        prompt: newPrompt.prompt,
+        tags: newPrompt.tags,
+        author: {
+          name: newPrompt.author.name,
+          role: newPrompt.author.role,
+          github: newPrompt.author.github || null,
+          linkedin: newPrompt.author.linkedin || null
+        },
+        usageCount: 1,
+        isCustom: true,
+        isTrending: false,
+        forkedFrom: newPrompt.forkedFrom || null,
+        forkedFromAuthor: newPrompt.forkedFromAuthor || null,
+        userId: user.uid,
+        createdAt: serverTimestamp()
+      });
+
+      if (newPrompt.forkedFrom) {
+        setSavedIds((prev) => {
+          if (!prev.includes(docId)) {
+            return [...prev, docId];
+          }
+          return prev;
+        });
+      }
+      setActiveView("all");
+      setActiveCategory(null);
+      setForkSource(null);
+    } catch (error) {
+      handleFirestoreError(error, OperationType.CREATE, `prompts/${docId}`);
+    }
   };
 
   const handleForkPrompt = (prompt: Prompt) => {
     setForkSource(prompt);
     setActiveView("create");
     setSelectedPrompt(null);
+  };
+
+  const handleDeletePrompt = async (promptId: string) => {
+    if (!user) return;
+    try {
+      await deleteDoc(doc(db, "prompts", promptId));
+      setSelectedPrompt(null);
+    } catch (error) {
+      handleFirestoreError(error, OperationType.DELETE, `prompts/${promptId}`);
+    }
   };
 
   // 5. Query processing and calculations
@@ -179,7 +256,11 @@ export default function App() {
     // 5b. View filter
     if (activeView === "trending" && !p.isTrending) return false;
     if (activeView === "saved" && !savedIds.includes(p.id)) return false;
-    if (activeView === "contributed" && !p.isCustom) return false;
+    
+    if (activeView === "contributed") {
+      if (!p.isCustom) return false;
+      if (!user || p.userId !== user.uid) return false;
+    }
 
     // 5c. Category filter
     if (activeCategory && p.category !== activeCategory) return false;
@@ -203,7 +284,7 @@ export default function App() {
 
   // Saved / Contributed stats counters
   const savedCount = savedIds.length;
-  const contributedCount = prompts.filter((p) => p.isCustom).length;
+  const contributedCount = user ? prompts.filter((p) => p.isCustom && p.userId === user.uid).length : 0;
 
   // 6. Reset welcome state if user wants to play again (optional SRE hook)
   const handleResetWelcome = () => {
@@ -236,6 +317,13 @@ export default function App() {
       {/* 2. Main content content area */}
       <main className="flex-1 flex flex-col min-w-0">
         
+        {dbSyncError && (
+          <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2.5 flex items-center gap-2.5 text-xs text-amber-300">
+            <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 animate-pulse" />
+            <span>Cloud sync warning: {dbSyncError}. Displaying local and cached templates.</span>
+          </div>
+        )}
+
         {/* Top bar search & utilities */}
         <header className="sticky top-0 z-30 h-16 border-b border-[#262B33] bg-[#0D0F12]/80 backdrop-blur-md px-6 flex items-center justify-between gap-4">
           
@@ -268,7 +356,7 @@ export default function App() {
               title="Show entry animation"
             >
               <Info className="w-3.5 h-3.5" />
-              <span>Intro Intro</span>
+              <span>Intro</span>
             </button>
 
             <button
@@ -536,6 +624,7 @@ export default function App() {
             isDisliked={dislikedIds.includes(selectedPrompt.id)}
             onLike={handleLikePrompt}
             onDislike={handleDislikePrompt}
+            onDelete={handleDeletePrompt}
           />
         )}
       </AnimatePresence>

@@ -1,0 +1,85 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      // Mandating email verification for standard writes
+      return request.auth.token.email_verified == true;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation helper for Prompt Entity
+    function isValidPrompt(data) {
+      return data.keys().hasAll(['id', 'title', 'category', 'description', 'prompt', 'tags', 'author', 'userId', 'createdAt'])
+        && data.keys().size() <= 14
+        && data.id is string && data.id.size() <= 128
+        && data.title is string && data.title.size() <= 150
+        && data.category is string && data.category.size() <= 100
+        && data.description is string && data.description.size() <= 500
+        && data.prompt is string && data.prompt.size() <= 15000
+        && data.tags is list && data.tags.size() <= 20
+        && (data.tags.size() == 0 || data.tags[0] is string)
+        && data.author is map
+        && data.author.keys().hasAll(['name', 'role'])
+        && data.author.name is string && data.author.name.size() <= 100
+        && data.author.role is string && data.author.role.size() <= 100
+        && (!data.author.keys().contains('github') || data.author.github is string)
+        && (!data.author.keys().contains('linkedin') || data.author.linkedin is string)
+        && data.userId is string && data.userId == request.auth.uid
+        && data.createdAt == request.time
+        && (!data.keys().contains('forkedFrom') || (data.forkedFrom is string && data.forkedFrom.size() <= 128))
+        && (!data.keys().contains('forkedFromAuthor') || (data.forkedFromAuthor is string && data.forkedFromAuthor.size() <= 100))
+        && (!data.keys().contains('isCustom') || data.isCustom is bool)
+        && (!data.keys().contains('isTrending') || data.isTrending is bool)
+        && (!data.keys().contains('usageCount') || data.usageCount is int);
+    }
+
+    // Prompts Rule Match
+    match /prompts/{promptId} {
+      allow read: if true; // Publicly readable for browse
+      
+      allow create: if isSignedIn() 
+        && isEmailVerified()
+        && isValidId(promptId) 
+        && isValidPrompt(incoming());
+
+      allow update: if isSignedIn()
+        && isEmailVerified()
+        && isValidId(promptId)
+        && isValidPrompt(incoming())
+        && incoming().userId == existing().userId
+        && incoming().id == existing().id
+        && incoming().createdAt == existing().createdAt
+        && incoming().userId == request.auth.uid
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly(['title', 'category', 'description', 'prompt', 'tags', 'author', 'usageCount'])
+        );
+
+      allow delete: if isSignedIn()
+        && isEmailVerified()
+        && isValidId(promptId)
+        && existing().userId == request.auth.uid;
+    }
+  }
+}

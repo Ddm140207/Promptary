@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Prompt } from "../types";
-import { Plus, User, FileText, Sparkles, PlusCircle, ArrowLeft, Send } from "lucide-react";
+import { Plus, User, FileText, Sparkles, PlusCircle, ArrowLeft, Send, LogIn } from "lucide-react";
 import { motion } from "motion/react";
+import { useAuth } from "../lib/AuthContext";
 
 interface CreatePromptFormProps {
   onPublish: (newPrompt: Prompt) => void;
@@ -12,6 +13,8 @@ interface CreatePromptFormProps {
 }
 
 export default function CreatePromptForm({ onPublish, onCancel, categories, forkSource }: CreatePromptFormProps) {
+  const { user, signInWithGoogle } = useAuth();
+
   // Author State
   const [authorName, setAuthorName] = useState("");
   const [authorRole, setAuthorRole] = useState("");
@@ -34,6 +37,12 @@ export default function CreatePromptForm({ onPublish, onCancel, categories, fork
 
   // Errors state
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (user && !authorName) {
+      setAuthorName(user.displayName || "");
+    }
+  }, [user, authorName]);
 
   const quickTags = [
     "Python", "Pandas", "SQL", "Machine Learning", 
@@ -99,6 +108,64 @@ export default function CreatePromptForm({ onPublish, onCancel, categories, fork
 
     onPublish(newPrompt);
   };
+
+  if (!user) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        className="max-w-md mx-auto bg-[#15181D] border border-[#262B33] rounded-2xl p-6 md:p-8 space-y-6 text-center shadow-2xl relative overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/5 to-blue-500/5 pointer-events-none" />
+        
+        <div className="flex justify-start">
+          <button
+            onClick={onCancel}
+            className="p-2 rounded-lg border border-[#262B33] text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="mx-auto w-12 h-12 bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 rounded-2xl flex items-center justify-center text-[#C084FC] shadow-inner">
+          <Sparkles className="w-6 h-6 animate-pulse" />
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="text-xl font-display font-extrabold text-white tracking-tight">
+            Join Promptary Community
+          </h2>
+          <p className="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto">
+            Sign in with Google to publish custom data science prompt templates, fork community blueprints, and manage your personalized library.
+          </p>
+        </div>
+
+        <div className="py-4 border-y border-[#20252D] text-left space-y-3">
+          <div className="flex items-start gap-2.5 text-xs text-slate-300">
+            <span className="text-emerald-400 font-bold text-xs">✓</span>
+            <span><strong>Publish Blueprints</strong>: Share high-performance ML, EDA, and cleaning prompts with your profile.</span>
+          </div>
+          <div className="flex items-start gap-2.5 text-xs text-slate-300">
+            <span className="text-emerald-400 font-bold text-xs">✓</span>
+            <span><strong>Fork templates</strong>: Instantly copy and customize workflows directly in your custom library.</span>
+          </div>
+          <div className="flex items-start gap-2.5 text-xs text-slate-300">
+            <span className="text-emerald-400 font-bold text-xs">✓</span>
+            <span><strong>Persistent Space</strong>: Custom blueprints are saved securely on our cloud Firestore database.</span>
+          </div>
+        </div>
+
+        <button
+          onClick={signInWithGoogle}
+          className="w-full flex items-center justify-center gap-2.5 py-3 px-4 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] hover:from-[#7c4fe3] hover:to-[#2d73e5] text-white text-sm font-semibold rounded-xl shadow-lg hover:shadow-purple-500/10 transition-all duration-300 cursor-pointer border border-white/10"
+        >
+          <LogIn className="w-4 h-4" />
+          <span>Continue with Google</span>
+        </button>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
