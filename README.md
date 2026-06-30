@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="./assets/promptary-banner.png" alt="Promptary Banner">
+</p>
+
+---
 # Promptary
 
 ## AI Prompt Knowledge Library for Data Science & Machine Learning
