@@ -49,8 +49,8 @@ export default function Sidebar({
             <div className="absolute inset-0 bg-gradient-to-tr from-[#8B5CF6] to-[#3B82F6] rounded-xl blur-md opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
             
             {/* Actual Icon Container */}
-            <div className="relative w-10 h-10 bg-gradient-to-br from-[#A78BFA] via-[#8B5CF6] to-[#3B82F6] rounded-xl flex items-center justify-center shadow-xl border border-white/20 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
-              <BrainCircuit className="w-5.5 h-5.5 text-white drop-shadow-[0_2px_8px_rgba(139,92,246,0.5)]" />
+            <div className="relative w-10 h-10 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
+              <img src="/favicon.svg" alt="Promptary Logo" className="w-10 h-10 rounded-xl shadow-xl border border-white/20" />
             </div>
           </div>
           <div className="flex flex-col">
