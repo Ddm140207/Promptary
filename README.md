@@ -1,7 +1,6 @@
 <p align="center">
-  <img src="./assets/promptary-banner.png" alt="Promptary Banner">
+  <img src="./src/promptary-banner.png" alt="Promptary Banner">
 </p>
-
 --- 
 
 # Promptary
