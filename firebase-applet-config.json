@@ -1,7 +1,7 @@
 {
   "projectId": "excellent-coral-bxhgq",
   "appId": "1:445126472052:web:cddc09d59c69dba1ad7c21",
-  "apiKey": "AIzaSyDjsJbxkh4mHoBanpBKXSMButb_fvk8rww",
+  "apiKey": "YOUR_FIREBASE_API_KEY",
   "authDomain": "excellent-coral-bxhgq.firebaseapp.com",
   "firestoreDatabaseId": "ai-studio-promptary-5d5c892e-5cd4-440a-8a3c-ed7ec189b364",
   "storageBucket": "excellent-coral-bxhgq.firebasestorage.app",
