@@ -1,0 +1,6 @@
+{
+  "name": "Promptary",
+  "description": "AI Prompt Knowledge Library for Data Scientists",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
